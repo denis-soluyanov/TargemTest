@@ -41,11 +41,11 @@ public:
 private:
     /* Auxiliary functions */
     MyString(char * data, size_t size);
+    void swap(MyString& rhs);
     void copyFrom(const char * str);
     void copyFrom(const MyString& rhs);
 
     /* Non-member functions */
-    friend void swap(MyString& lhs, MyString& rhs);
     friend std::ostream& operator<<(std::ostream& os, const MyString& rhs);
     friend MyString operator+(const MyString& lhs, const MyString& rhs);
     friend bool operator<(const MyString& lhs, const MyString& rhs);

@@ -31,13 +31,13 @@ MyString& MyString::operator=(const char * str)
 
 MyString::MyString(MyString&& rhs) noexcept
 {
-    swap(*this, rhs);
+    swap(rhs);
 }
 
 MyString& MyString::operator=(MyString&& rhs) noexcept
 {
     if (this == &rhs) return *this;
-    swap(*this, rhs);
+    swap(rhs);
     return *this;
 }
 
@@ -81,10 +81,10 @@ void MyString::copyFrom(const MyString& rhs)
     }
 }
 
-void swap(MyString& lhs, MyString& rhs)
+void MyString::swap(MyString& rhs)
 {
-    std::swap(lhs.data_, rhs.data_);
-    std::swap(lhs.size_, rhs.size_);
+    std::swap(data_, rhs.data_);
+    std::swap(size_, rhs.size_);
 }
 
 std::ostream& operator<<(std::ostream& os, const MyString& rhs)
