@@ -20,8 +20,6 @@ public:
     /* Copy assignment operator */
     MyString& operator=(const MyString& rhs);
 
-    MyString& operator=(const char * str);
-
     /* Move constructor */
     MyString(MyString&& rhs);
 

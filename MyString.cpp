@@ -12,16 +12,6 @@ MyString::MyString(const char * str)
     strncpy(data_, str, size_ + 1);
 }
 
-MyString& MyString::operator=(const char * str)
-{
-    if (!str) throw std::invalid_argument("Passed argument is NULL");
-
-    size_ = strlen(str);
-    data_ = new char[size_ + 1];
-
-    strncpy(data_, str, size_ + 1);
-}
-
 MyString::MyString(const MyString& rhs)
 {
     copyFrom(rhs);
