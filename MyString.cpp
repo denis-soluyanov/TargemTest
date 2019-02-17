@@ -2,14 +2,13 @@
 #include <stdexcept>
 #include <cstring>
 
+MyString::MyString() : data_(new char[1]{'\0'})
+{
+}
+
 MyString::MyString(const char * str)
 {
-    if (!str) throw std::invalid_argument("Passed argument is NULL");
-
-    size_ = strlen(str);
-    data_ = new char[size_ + 1];
-
-    strncpy(data_, str, size_ + 1);
+    copyFrom(str);
 }
 
 MyString::MyString(const MyString& rhs)
@@ -21,16 +20,24 @@ MyString& MyString::operator=(const MyString& rhs)
 {
     if (this == &rhs) return *this;
     copyFrom(rhs);
+    return *this;
 }
 
-MyString::MyString(MyString&& rhs)
+MyString& MyString::operator=(const char * str)
 {
-    stealFrom(std::move(rhs));
+    copyFrom(str);
+    return *this;
 }
 
-MyString& MyString::operator=(MyString&& rhs)
+MyString::MyString(MyString&& rhs) noexcept
 {
-    stealFrom(std::move(rhs));
+    swap(*this, rhs);
+}
+
+MyString& MyString::operator=(MyString&& rhs) noexcept
+{
+    if (this == &rhs) return *this;
+    swap(*this, rhs);
     return *this;
 }
 
@@ -53,6 +60,15 @@ MyString::MyString(char * data, size_t size) : data_(data), size_(size)
 {
 }
 
+void MyString::copyFrom(const char * str)
+{
+    if (!str) throw std::invalid_argument("Passed argument is NULL");
+
+    size_ = strlen(str);
+    data_ = new char[size_ + 1];
+    strncpy(data_, str, size_ + 1);
+}
+
 void MyString::copyFrom(const MyString& rhs)
 {
     delete[] data_;
@@ -65,13 +81,10 @@ void MyString::copyFrom(const MyString& rhs)
     }
 }
 
-void MyString::stealFrom(MyString&& rhs)
+void swap(MyString& lhs, MyString& rhs)
 {
-    size_ = rhs.size_;
-    data_ = rhs.data_;
-
-    rhs.size_ = 0;
-    rhs.data_ = nullptr;
+    std::swap(lhs.data_, rhs.data_);
+    std::swap(lhs.size_, rhs.size_);
 }
 
 std::ostream& operator<<(std::ostream& os, const MyString& rhs)

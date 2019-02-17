@@ -9,7 +9,7 @@ private:
 
 public:
     /* Default constructor */
-    MyString() = default;
+    MyString();
 
     /* Constructor for create string from C-string */
     MyString(const char * str);
@@ -20,11 +20,14 @@ public:
     /* Copy assignment operator */
     MyString& operator=(const MyString& rhs);
 
+    /* C-string assignment operator */
+    MyString& operator=(const char * str);
+
     /* Move constructor */
-    MyString(MyString&& rhs);
+    MyString(MyString&& rhs) noexcept;
 
     /* Move assignment operator */
-    MyString& operator=(MyString&& rhs);
+    MyString& operator=(MyString&& rhs) noexcept;
 
     /* Get size of the current string, excluding '\0' */
     size_t size() const;
@@ -38,10 +41,11 @@ public:
 private:
     /* Auxiliary functions */
     MyString(char * data, size_t size);
+    void copyFrom(const char * str);
     void copyFrom(const MyString& rhs);
-    void stealFrom(MyString&& rhs);
 
     /* Non-member functions */
+    friend void swap(MyString& lhs, MyString& rhs);
     friend std::ostream& operator<<(std::ostream& os, const MyString& rhs);
     friend MyString operator+(const MyString& lhs, const MyString& rhs);
     friend bool operator<(const MyString& lhs, const MyString& rhs);
